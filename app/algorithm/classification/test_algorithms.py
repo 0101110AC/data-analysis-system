@@ -6,6 +6,9 @@ from svm import SVM, SVMParams
 from lstm import LSTM, LSTMParams
 from decision_tree import DecisionTree, DecisionTreeParams
 
+import sys
+sys.stdout.reconfigure(encoding='utf-8')
+
 def load_mnist_data():
     transform = transforms.Compose([
         transforms.ToTensor(),
