@@ -1,0 +1,21 @@
+{
+  "title": "数据分析助手",
+  "sidebar": {
+    "search": "搜索算法...",
+    "categories": "类别",
+    "algorithms": "算法",
+    "help": "帮助"
+  },
+  "main": {
+    "fileUpload": "上传文件",
+    "askQuestion": "询问关于您的数据或所选算法的问题...",
+    "send": "发送"
+  },
+  "categories": {
+    "all": "全部",
+    "descriptive": "描述性",
+    "predictive": "预测性",
+    "prescriptive": "规范性"
+  }
+}
+

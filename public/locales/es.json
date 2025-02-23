@@ -1,0 +1,21 @@
+{
+  "title": "Asistente de Análisis de Datos",
+  "sidebar": {
+    "search": "Buscar algoritmos...",
+    "categories": "Categorías",
+    "algorithms": "Algoritmos",
+    "help": "Ayuda"
+  },
+  "main": {
+    "fileUpload": "Subir archivo",
+    "askQuestion": "Pregunte sobre sus datos o el algoritmo seleccionado...",
+    "send": "Enviar"
+  },
+  "categories": {
+    "all": "Todos",
+    "descriptive": "Descriptivo",
+    "predictive": "Predictivo",
+    "prescriptive": "Prescriptivo"
+  }
+}
+

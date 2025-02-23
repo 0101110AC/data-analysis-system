@@ -1,0 +1,21 @@
+{
+  "title": "Data Analysis Assistant",
+  "sidebar": {
+    "search": "Search algorithms...",
+    "categories": "Categories",
+    "algorithms": "Algorithms",
+    "help": "Help"
+  },
+  "main": {
+    "fileUpload": "Upload file",
+    "askQuestion": "Ask about your data or selected algorithm...",
+    "send": "Send"
+  },
+  "categories": {
+    "all": "All",
+    "descriptive": "Descriptive",
+    "predictive": "Predictive",
+    "prescriptive": "Prescriptive"
+  }
+}
+
