@@ -4,7 +4,7 @@ import torch.optim as optim
 import numpy as np
 
 class LSTMParams:
-    def __init__(self, input_size=1, hidden_size=64, num_layers=2, dropout=0.1, attention=True):
+    def __init__(self, input_size=784, hidden_size=128, num_layers=2, dropout=0.2, attention=True):
         self.input_size = input_size
         self.hidden_size = hidden_size
         self.num_layers = num_layers

@@ -15,11 +15,13 @@ class Generator(nn.Module):
     def __init__(self, latent_dim, hidden_dim, output_dim):
         super().__init__()
         self.main = nn.Sequential(
-            nn.Linear(latent_dim, 256),
+            nn.Linear(latent_dim, hidden_dim),
             nn.LeakyReLU(0.2),
-            nn.Linear(256, 512),
+            nn.BatchNorm1d(hidden_dim),
+            nn.Linear(hidden_dim, hidden_dim * 2),
             nn.LeakyReLU(0.2),
-            nn.Linear(512, 784),
+            nn.BatchNorm1d(hidden_dim * 2),
+            nn.Linear(hidden_dim * 2, output_dim),
             nn.Tanh()
         )
 
@@ -30,13 +32,15 @@ class Discriminator(nn.Module):
     def __init__(self, input_dim, hidden_dim):
         super().__init__()
         self.main = nn.Sequential(
-            nn.Linear(784, 512),
+            nn.Linear(input_dim, hidden_dim * 2),
             nn.LeakyReLU(0.2),
             nn.Dropout(0.3),
-            nn.Linear(512, 256),
+            nn.BatchNorm1d(hidden_dim * 2),
+            nn.Linear(hidden_dim * 2, hidden_dim),
             nn.LeakyReLU(0.2),
             nn.Dropout(0.3),
-            nn.Linear(256, 1),
+            nn.BatchNorm1d(hidden_dim),
+            nn.Linear(hidden_dim, 1),
             nn.Sigmoid()
         )
 
@@ -45,13 +49,20 @@ class Discriminator(nn.Module):
 
 class GAN:
     def __init__(self, params=None):
-        if params is None:
-            params = GANParams()
-        self.latent_dim = params.latent_dim
-        self.hidden_dim = params.hidden_dim
-        self.output_dim = params.output_dim
-        self.lr = params.lr
-        self.beta1 = params.beta1
+        if isinstance(params, dict):
+            self.latent_dim = params.get('latent_dim', 100)
+            self.hidden_dim = params.get('hidden_dim', 256)
+            self.output_dim = params.get('output_dim', 784)
+            self.lr = params.get('lr', 0.0002)
+            self.beta1 = params.get('beta1', 0.5)
+        else:
+            if params is None:
+                params = GANParams()
+            self.latent_dim = params.latent_dim
+            self.hidden_dim = params.hidden_dim
+            self.output_dim = params.output_dim
+            self.lr = params.lr
+            self.beta1 = params.beta1
         self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
         # 初始化生成器和判别器

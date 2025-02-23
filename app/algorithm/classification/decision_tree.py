@@ -14,13 +14,11 @@ class TreeModel(nn.Module):
     def __init__(self):
         super().__init__()
         self.layers = nn.Sequential(
-            nn.Linear(784, 512),  # 调整输入维度为784（MNIST数据集的特征维度）
+            nn.Linear(784, 128),  # 减少第一层维度
             nn.ReLU(),
-            nn.Linear(512, 256),
+            nn.Linear(128, 64),
             nn.ReLU(),
-            nn.Linear(256, 128),
-            nn.ReLU(),
-            nn.Linear(128, 1),
+            nn.Linear(64, 1),
             nn.Sigmoid()
         )
 
@@ -53,15 +51,14 @@ class DecisionTree:
       'accuracy': []
     }
 
-    num_epochs = 100
-    batch_size = 32
+    num_epochs = 50  # 减少训练轮数
+    batch_size = 64  # 增加批处理大小
 
     for epoch in range(num_epochs):
       self.model.train()
       total_loss = 0
       correct_preds = 0
 
-      # Implement mini-batch training
       for i in range(0, len(x), batch_size):
         batch_x = x_tensor[i:min(i + batch_size, len(x))]
         batch_y = y_tensor[i:min(i + batch_size, len(x))]

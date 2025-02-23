@@ -26,13 +26,13 @@ class SVMModel(nn.Module):
         
         # 定义网络结构
         self.layers = nn.Sequential(
-            nn.Linear(input_dim, 512),  # 使用input_dim作为输入维度
+            nn.Linear(input_dim, 128),  # 减少第一层维度
             nn.ReLU(),
-            nn.Linear(512, 256),
+            nn.Linear(128, 64),
             nn.ReLU(),
-            nn.Linear(256, 128),
+            nn.Linear(64, 32),
             nn.ReLU(),
-            nn.Linear(128, 1)
+            nn.Linear(32, 1)
         )
     
     def forward(self, x):
@@ -66,7 +66,8 @@ class SVM:
         
     def train(self, x, y):
         # 将数据转换为PyTorch张量，并确保维度正确
-        x = x.reshape(-1, 784)  # 将输入数据reshape为(batch_size, 784)
+        if len(x.shape) == 1:
+            x = x.reshape(-1, 1)
         x_tensor = torch.tensor(x, dtype=torch.float32).to(self.device)
         y_tensor = torch.tensor(y, dtype=torch.float32).reshape(-1, 1).to(self.device)
         
@@ -117,7 +118,8 @@ class SVM:
     
     def predict(self, x):
         self.model.eval()
-        x = x.reshape(-1, 784)  # 将输入数据reshape为(batch_size, 784)
+        if len(x.shape) == 1:
+            x = x.reshape(-1, 1)
         x_tensor = torch.tensor(x, dtype=torch.float32).to(self.device)
         
         with torch.no_grad():

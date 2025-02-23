@@ -34,12 +34,16 @@ def test_gan():
     print('\n测试GAN模型...')
     train_data, _ = load_mnist_data()
     
+    # 对数据进行归一化处理
+    train_data = train_data / 255.0  # 将像素值缩放到[0,1]范围
+    train_data = 2 * train_data - 1  # 将范围调整到[-1,1]
+    
     # 初始化GAN模型
     gan_params = GANParams(latent_dim=100, hidden_dim=256, output_dim=784)
     gan = GAN(gan_params)
     
     # 训练模型
-    history = gan.train(train_data[:1000], num_epochs=5, batch_size=64)
+    history = gan.train(train_data[:1000], num_epochs=10, batch_size=64)
     
     # 生成样本
     generated_samples = gan.generate(10)
@@ -60,7 +64,7 @@ def test_svm():
     y = train_labels[mask][:1000]
     
     # 初始化SVM模型
-    svm_params = SVMParams(kernel='rbf', C=1.0)
+    svm_params = SVMParams(kernel='rbf', C=1.0, gamma='scale')
     svm = SVM(svm_params)
     
     # 训练模型
@@ -84,11 +88,11 @@ def test_lstm():
     y = (train_labels[:1000] >= 5).astype(np.float32)  # 二分类问题：是否大于等于5
     
     # 初始化LSTM模型
-    lstm_params = LSTMParams(input_size=28, hidden_size=64, num_layers=2)
+    lstm_params = LSTMParams(input_size=28, hidden_size=64, num_layers=2, dropout=0.1)
     lstm = LSTM(lstm_params)
     
     # 训练模型
-    history = lstm.train(X, y, num_epochs=5)
+    history = lstm.train(X, y, num_epochs=10, batch_size=32)
     
     # 评估模型
     metrics = lstm.evaluate(X[:100], y[:100])
@@ -108,8 +112,8 @@ def test_decision_tree():
     X = train_data[mask][:1000]
     y = train_labels[mask][:1000]
     
-    # 初始化决策树模型
-    dt_params = DecisionTreeParams(maxDepth=5, minSamplesSplit=2)
+    # 初始化决策树模型，调整参数以适应高维输入
+    dt_params = DecisionTreeParams(maxDepth=10, minSamplesSplit=5)
     dt = DecisionTree(dt_params)
     
     # 训练模型
