@@ -1,3 +1,5 @@
+"use client"
+
 import type React from "react"
 import Sidebar from "@/components/Sidebar"
 import LanguageSwitcher from "@/components/LanguageSwitcher"
