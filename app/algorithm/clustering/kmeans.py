@@ -1,9 +1,10 @@
 import torch
 import torch.nn as nn
 import numpy as np
+from sklearn.metrics import silhouette_score
 
 class KMeansParams:
-    def __init__(self, n_clusters=8, max_iter=300, tol=1e-4):
+    def __init__(self, n_clusters=2, max_iter=300, tol=1e-4):
         self.n_clusters = n_clusters
         self.max_iter = max_iter
         self.tol = tol
@@ -11,17 +12,17 @@ class KMeansParams:
 class KMeans:
     def __init__(self, params=None):
         if params is None:
-            params = {}
-        self.n_clusters = params.get('n_clusters', 8)
-        self.max_iter = params.get('max_iter', 300)
-        self.tol = params.get('tol', 1e-4)
+            params = KMeansParams()
+        self.n_clusters = params.n_clusters
+        self.max_iter = params.max_iter
+        self.tol = params.tol
         self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
         self.centroids = None
         self.labels = None
         self.inertia = None
+        self.silhouette_score = None
 
     def _initialize_centroids(self, X):
-        # 随机选择k个数据点作为初始聚类中心
         n_samples = X.shape[0]
         indices = torch.randperm(n_samples)[:self.n_clusters]
         self.centroids = X[indices].clone()
@@ -37,7 +38,8 @@ class KMeans:
         prev_centroids = torch.zeros_like(self.centroids)
         history = {
             'inertia': [],
-            'centroid_shifts': []
+            'centroid_shifts': [],
+            'silhouette_scores': []
         }
 
         for _ in range(self.max_iter):
@@ -62,9 +64,17 @@ class KMeans:
             # 计算惯性（样本到其聚类中心的距离平方和）
             self.inertia = torch.sum(torch.min(distances, dim=1)[0])
             
+            # 计算轮廓系数
+            current_labels = self.labels.cpu().numpy()
+            if len(np.unique(current_labels)) > 1:  # 确保至少有两个类别
+                self.silhouette_score = silhouette_score(X, current_labels)
+            else:
+                self.silhouette_score = 0
+            
             # 记录历史
             history['inertia'].append(self.inertia.item())
             history['centroid_shifts'].append(centroid_shift.item())
+            history['silhouette_scores'].append(self.silhouette_score)
             
             # 如果聚类中心基本不再移动，则停止迭代
             if centroid_shift < self.tol:
