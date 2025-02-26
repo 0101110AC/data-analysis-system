@@ -1,34 +1,15 @@
-import numpy as np
-from sklearn.datasets import fetch_california_housing
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
-from models import (
+from .models import (
     LinearRegressionModel,
     RidgeRegressionModel,
     LassoRegressionModel,
     ElasticNetRegressionModel,
     RegressionParams
 )
-
-def load_data():
-    # 加载加利福尼亚房价数据集
-    california = fetch_california_housing()
-    X, y = california.data, california.target
-    
-    # 数据预处理
-    scaler = StandardScaler()
-    X = scaler.fit_transform(X)
-    
-    # 划分训练集和测试集
-    X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=0.2, random_state=42
-    )
-    
-    return X_train, X_test, y_train, y_test
+from ...data.regression_data import RegressionDataManager
 
 def train_and_evaluate():
     # 加载数据
-    X_train, X_test, y_train, y_test = load_data()
+    X_train, X_test, y_train, y_test = RegressionDataManager.load_california_housing()
     
     # 定义要测试的算法和参数
     algorithms = [
