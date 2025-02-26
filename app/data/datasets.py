@@ -135,7 +135,7 @@ class DatasetManager:
     
     def generate_regression_datasets(self):
         """生成回归算法使用的数据集"""
-        from sklearn.datasets import fetch_california_housing, load_boston
+        from sklearn.datasets import fetch_california_housing
         
         # 加载加利福尼亚房价数据集
         california = fetch_california_housing()
