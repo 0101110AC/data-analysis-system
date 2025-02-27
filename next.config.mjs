@@ -21,6 +21,8 @@ const nextConfig = {
     parallelServerBuildTraces: true,
     parallelServerCompiles: true,
   },
+  output: 'standalone',
+  generateBuildId: () => 'build',
 }
 
 mergeConfig(nextConfig, userConfig)
