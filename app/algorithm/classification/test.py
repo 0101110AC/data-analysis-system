@@ -15,7 +15,7 @@ def load_mnist_data():
         transforms.Normalize((0.5,), (0.5,))
     ])
     
-    mnist = datasets.MNIST('./data', train=True, download=True, transform=transform)
+    mnist = datasets.MNIST('./data', train=True, download=False, transform=transform)
     train_loader = torch.utils.data.DataLoader(mnist, batch_size=64, shuffle=True)
     
     # 将数据转换为numpy数组格式

@@ -3,10 +3,10 @@ import torch
 from torchvision import datasets, transforms
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
-from app.algorithm.classification.decision_tree import DecisionTree, DecisionTreeParams
-from app.algorithm.classification.svm import SVM, SVMParams
-from app.algorithm.classification.gan import GAN
-from app.algorithm.classification.lstm import LSTM, LSTMParams
+from decision_tree import DecisionTree, DecisionTreeParams
+from svm import SVM, SVMParams
+from gan import GAN
+from lstm import LSTM, LSTMParams
 import asyncio
 
 def load_mnist_data():
@@ -15,7 +15,7 @@ def load_mnist_data():
         transforms.Normalize((0.5,), (0.5,))
     ])
     
-    mnist = datasets.MNIST('./data', train=True, download=True, transform=transform)
+    mnist = datasets.MNIST('./data', train=True, download=False, transform=transform)
     train_loader = torch.utils.data.DataLoader(mnist, batch_size=64, shuffle=True)
     
     # 将数据转换为numpy数组格式，并限制数据量

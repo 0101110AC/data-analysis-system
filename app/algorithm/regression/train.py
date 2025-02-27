@@ -7,9 +7,17 @@ from .models import (
 )
 from ...data.regression_data import RegressionDataManager
 
-def train_and_evaluate():
-    # 加载数据
-    X_train, X_test, y_train, y_test = RegressionDataManager.load_california_housing()
+def train_and_evaluate(dataset_name='california_housing'):
+    # 根据数据集名称加载数据
+    if dataset_name == 'california_housing':
+        X_train, X_test, y_train, y_test = RegressionDataManager.load_california_housing()
+    elif dataset_name == 'linear':
+        X_train, X_test, y_train, y_test = RegressionDataManager.load_linear_regression()
+    elif dataset_name == 'nonlinear':
+        X_train, X_test, y_train, y_test = RegressionDataManager.load_nonlinear_regression()
+    else:
+        raise ValueError(f"未知的数据集名称: {dataset_name}")
+
     
     # 定义要测试的算法和参数
     algorithms = [
@@ -62,7 +70,12 @@ def train_and_evaluate():
 
 def main():
     try:
-        results = train_and_evaluate()
+        # 对每个数据集进行训练和评估
+        datasets = ['california_housing', 'linear', 'nonlinear']
+        
+        for dataset in datasets:
+            print(f"\n使用数据集: {dataset}")
+            results = train_and_evaluate(dataset)
         
         # 比较不同模型的性能
         print("\n模型性能比较：")

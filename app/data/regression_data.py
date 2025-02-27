@@ -1,14 +1,19 @@
 import numpy as np
+import pandas as pd
 from sklearn.datasets import fetch_california_housing
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 
 class RegressionDataManager:
     @staticmethod
-    def load_california_housing():
-        """加载加利福尼亚房价数据集"""
-        california = fetch_california_housing()
-        X, y = california.data, california.target
+    def _load_from_csv(file_path):
+        """从CSV文件加载数据集"""
+        # 读取CSV文件
+        df = pd.read_csv(file_path)
+        
+        # 分离特征和目标变量（假设最后一列是目标变量）
+        X = df.iloc[:, :-1].values
+        y = df.iloc[:, -1].values
         
         # 数据预处理
         scaler = StandardScaler()
@@ -20,6 +25,21 @@ class RegressionDataManager:
         )
         
         return X_train, X_test, y_train, y_test
+    
+    @staticmethod
+    def load_california_housing():
+        """加载加利福尼亚房价数据集"""
+        return RegressionDataManager._load_from_csv('data/regression/california_housing.csv')
+    
+    @staticmethod
+    def load_linear_regression():
+        """加载线性回归数据集"""
+        return RegressionDataManager._load_from_csv('data/regression/linear_regression.csv')
+    
+    @staticmethod
+    def load_nonlinear_regression():
+        """加载非线性回归数据集"""
+        return RegressionDataManager._load_from_csv('data/regression/nonlinear_regression.csv')
     
     @staticmethod
     def generate_synthetic_data(n_samples=1000, n_features=5):

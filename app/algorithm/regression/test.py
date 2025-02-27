@@ -21,9 +21,16 @@ plt.rcParams['font.size'] = 12  # 设置默认字体大小
 plt.rcParams['axes.titlesize'] = 14  # 设置标题字体大小
 plt.rcParams['axes.labelsize'] = 12  # 设置轴标签字体大小
 
-def train_and_evaluate_models():
-    # 加载数据
-    X_train, X_test, y_train, y_test, feature_names = RegressionDataManager.generate_synthetic_data()
+def train_and_evaluate_models(dataset_name='california_housing'):
+    # 根据数据集名称加载数据
+    if dataset_name == 'california_housing':
+        X_train, X_test, y_train, y_test = RegressionDataManager.load_california_housing()
+    elif dataset_name == 'linear':
+        X_train, X_test, y_train, y_test = RegressionDataManager.load_linear_regression()
+    elif dataset_name == 'nonlinear':
+        X_train, X_test, y_train, y_test = RegressionDataManager.load_nonlinear_regression()
+    else:
+        raise ValueError(f"未知的数据集名称: {dataset_name}")
     
     # 定义模型参数
     models = {
@@ -120,8 +127,13 @@ def plot_model_comparison(results):
 
 def main():
     try:
-        # 训练和评估模型
-        results = train_and_evaluate_models()
+        # 对每个数据集进行训练和评估
+        datasets = ['california_housing', 'linear', 'nonlinear']
+        
+        for dataset in datasets:
+            print(f"\n使用数据集: {dataset}")
+            # 训练和评估模型
+            results = train_and_evaluate_models(dataset)
         
         # 绘制训练历史
         plot_training_history(results)

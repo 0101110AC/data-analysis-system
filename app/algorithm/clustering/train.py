@@ -1,5 +1,6 @@
 import torch
 import numpy as np
+import pandas as pd
 from sklearn.datasets import make_blobs, make_moons, make_circles
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import silhouette_score, calinski_harabasz_score
@@ -9,30 +10,27 @@ from app.algorithm.clustering.hierarchical import Hierarchical, HierarchicalPara
 from app.algorithm.clustering.gmm import GMM, GMMParams
 
 def load_data():
-    # 生成不同类型的数据集
-    n_samples = 1000
-    random_state = 42
+    # 从本地CSV文件加载数据
+    datasets = {}
     
-    # 1. 球形分布数据集 (适用于K-means)
-    kmeans_X, _ = make_blobs(n_samples=n_samples, n_features=2, centers=3,
-                            cluster_std=[0.5, 0.8, 0.3],  # 保持原有参数
-                            random_state=random_state)
+    # 加载K-means数据集
+    kmeans_data = pd.read_csv('data/clustering/kmeans_data.csv')
+    kmeans_X = kmeans_data.values
     
-    # 2. 非球形分布数据集 (适用于DBSCAN)
-    dbscan_X, _ = make_moons(n_samples=n_samples, noise=0.05,  # 降低噪声使结构更清晰
-                            random_state=random_state)
+    # 加载DBSCAN数据集
+    dbscan_data = pd.read_csv('data/clustering/dbscan_data.csv')
+    dbscan_X = dbscan_data.values
     
-    # 3. 层次结构数据集 (适用于层次聚类)
-    hierarchical_X, _ = make_circles(n_samples=n_samples, noise=0.03,
-                                   factor=0.5,  # 调整内外圆的比例
-                                   random_state=random_state)
+    # 加载层次聚类数据集
+    hierarchical_data = pd.read_csv('data/clustering/hierarchical_data.csv')
+    hierarchical_X = hierarchical_data.values
     
-    # 4. 混合高斯分布数据集 (适用于GMM)
-    gmm_X, _ = make_blobs(n_samples=n_samples, n_features=2, centers=3,
-                         cluster_std=[0.5, 0.8, 1.0],  # 调整方差差异
-                         random_state=random_state)
+    # 加载GMM数据集
+    gmm_data = pd.read_csv('data/clustering/gmm_data.csv')
+    gmm_X = gmm_data.values
     
     # 划分训练集和测试集
+    random_state = 42
     kmeans_train, kmeans_test = train_test_split(kmeans_X, test_size=0.2, random_state=random_state)
     dbscan_train, dbscan_test = train_test_split(dbscan_X, test_size=0.2, random_state=random_state)
     hierarchical_train, hierarchical_test = train_test_split(hierarchical_X, test_size=0.2, random_state=random_state)

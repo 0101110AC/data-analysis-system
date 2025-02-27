@@ -1,6 +1,6 @@
 import unittest
 import numpy as np
-from sklearn.datasets import make_blobs, make_moons, make_circles
+import pandas as pd
 from sklearn.model_selection import train_test_split
 from app.algorithm.clustering.kmeans import KMeans, KMeansParams
 from app.algorithm.clustering.dbscan import DBSCAN, DBSCANParams
@@ -11,24 +11,24 @@ from app.algorithm.clustering.train import evaluate_clustering
 class TestClustering(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        # 生成测试数据集
-        n_samples = 300
+        # 从本地CSV文件加载数据
         random_state = 42
         
-        # 为每个算法生成合适的数据集
-        # 1. K-means：球形分布数据
-        kmeans_X, _ = make_blobs(n_samples=n_samples, n_features=2, centers=3,
-                                cluster_std=[0.5, 0.8, 0.3], random_state=random_state)
+        # 加载K-means数据集
+        kmeans_data = pd.read_csv('data/clustering/kmeans_data.csv')
+        kmeans_X = kmeans_data.values
         
-        # 2. DBSCAN：非球形分布数据
-        dbscan_X, _ = make_moons(n_samples=n_samples, noise=0.05, random_state=random_state)
+        # 加载DBSCAN数据集
+        dbscan_data = pd.read_csv('data/clustering/dbscan_data.csv')
+        dbscan_X = dbscan_data.values
         
-        # 3. 层次聚类：同心圆数据
-        hierarchical_X, _ = make_circles(n_samples=n_samples, noise=0.03, factor=0.5, random_state=random_state)
+        # 加载层次聚类数据集
+        hierarchical_data = pd.read_csv('data/clustering/hierarchical_data.csv')
+        hierarchical_X = hierarchical_data.values
         
-        # 4. GMM：混合高斯分布数据
-        gmm_X, _ = make_blobs(n_samples=n_samples, n_features=2, centers=3,
-                             cluster_std=[0.5, 0.8, 1.0], random_state=random_state)
+        # 加载GMM数据集
+        gmm_data = pd.read_csv('data/clustering/gmm_data.csv')
+        gmm_X = gmm_data.values
         
         # 划分训练集和测试集
         cls.datasets = {
