@@ -1,5 +1,5 @@
 import type { NextRequest } from "next/server"
-import { deepseek } from "@/lib/deepseek"
+import { doubao } from "@/lib/doubao-1-5-lite-32k"
 
 export async function POST(req: NextRequest) {
   try {
@@ -23,10 +23,11 @@ export async function POST(req: NextRequest) {
       fileContent ? { role: "user", content: fileContent } : null,
     ].filter(Boolean)
 
-    const result = await deepseek({
+    const result = await doubao({
       model: "doubao-1-5-lite-32k-250115",
     })(allMessages)
 
+    // 直接返回豆包API的结果，它已经是一个正确格式的Response对象
     return result
   } catch (error) {
     console.error("Chat API Error:", error)

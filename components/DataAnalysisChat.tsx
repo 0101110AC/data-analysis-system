@@ -25,6 +25,8 @@ export default function DataAnalysisChat() {
 
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    let uploadedFileName = null
+    
     if (file) {
       const formData = new FormData()
       formData.append("file", file)
@@ -38,6 +40,7 @@ export default function DataAnalysisChat() {
         if (response.ok) {
           const result = await response.json()
           console.log("File uploaded:", result)
+          uploadedFileName = result.fileName
         } else {
           console.error("File upload failed")
         }
@@ -45,7 +48,19 @@ export default function DataAnalysisChat() {
         console.error("Error uploading file:", error)
       }
     }
-    handleSubmit(e)
+    
+    // 使用自定义提交函数，将文件信息传递给聊天API
+    const customSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+      handleSubmit(e, {
+        options: {
+          body: {
+            file: uploadedFileName ? { name: uploadedFileName } : null
+          }
+        }
+      })
+    }
+    
+    customSubmit(e)
   }
 
   return (
