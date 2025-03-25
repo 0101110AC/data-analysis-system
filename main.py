@@ -2,7 +2,7 @@ from fastapi import FastAPI, Request, File, UploadFile
 from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
-from lib.doubao_1_5_lite_32k import doubao, DoubaoConfig
+from lib.doubao_1_5_pro_32k import doubao, DoubaoConfig
 from lib.ml_agent import ml_agent, MLAgentConfig
 import os
 import json

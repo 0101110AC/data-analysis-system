@@ -4,7 +4,7 @@ from fastapi.responses import StreamingResponse
 import json
 import asyncio
 import aiohttp
-from lib.doubao_1_5_lite_32k import doubao, DoubaoConfig
+from lib.doubao_1_5_pro_32k import doubao, DoubaoConfig
 from langchain_ollama import OllamaLLM
 from langchain_core.prompts import PromptTemplate
 from langchain.chains import LLMChain
